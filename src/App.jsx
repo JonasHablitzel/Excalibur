@@ -1,0 +1,25 @@
+import { useEffect } from "react";
+import useScript from "./useScript";
+import Controls from "./Controls";
+import Map from "./Map";
+import "./App.css";
+import ImgOverlay from "./ImgOverlay";
+import RefImgMap from "./RefImgMap";
+
+function App() {
+  const status = useScript("src/opencv.js");
+
+  return status === "ready" ? (
+    <div className="App">
+      <Controls />
+      <Map />
+      <ImgOverlay />
+      <RefImgMap />
+      <div className="DragRestrictor" />
+    </div>
+  ) : (
+    <div>Loading...</div>
+  );
+}
+
+export default App;
