@@ -7,8 +7,7 @@ import ImgOverlay from "./ImgOverlay";
 import RefImgMap from "./RefImgMap";
 
 function App() {
-  const status = useScript("src/opencv.js");
-
+  const status = useScript("https://docs.opencv.org/4.5.3/opencv.js");
   return status === "ready" ? (
     <div className="App">
       <Controls />
