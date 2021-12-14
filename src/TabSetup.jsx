@@ -78,6 +78,7 @@ export default function TabSetup() {
     <Box display="flex" flexDirection="column">
       <TextField
         label="Scene Name"
+        value={sceneName}
         onChange={(e) => setSceneName(e.target.value)}
       />
       <Divider sx={{ pt: 3, pb: 2 }} textAlign="left">
