@@ -10,6 +10,7 @@ import useStore from "./store/store";
 export default function TabSetup() {
   const setNewImage = useStore((state) => state.setNewImage);
   const updateSate = useStore((state) => state.updateSate);
+  const sceneName = useStore((state) => state.sceneName);
   const setSceneName = useStore((state) => state.setSceneName);
   const storeState = useStore(
     (state) => ({
