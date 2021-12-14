@@ -1,7 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
-import useStore from "./store";
-import { homographyfromepnp, image2cvMat, jsarray2cvMat } from "./cvhelpers";
-import { projectexy } from "./geohelpers";
+import useStore from "./store/store";
+import {
+  homographyfromepnp,
+  image2cvMat,
+  jsarray2cvMat,
+} from "./utils/cvhelpers";
+import { projectexy } from "./utils/geohelpers";
 import shallow from "zustand/shallow";
 export default function ImgOverlay({ props }) {
   const outCanvas = useRef(null);
@@ -11,8 +15,9 @@ export default function ImgOverlay({ props }) {
   const mapRefPoint = useStore((state) => state.mapRefPoint);
   const mapPixelSize = useStore((state) => state.mapPixelSize);
   const referenceMarkers = useStore((state) => state.referenceMarkers);
-  const [cameraMatrix, distortion] = useStore(
-    (state) => [state.cameraMatrix, state.distortion],
+  const setHomgrToRefPoint = useStore((state) => state.setHomgrToRefPoint);
+  const [cameraMatrix, distorCoeff] = useStore(
+    (state) => [state.cameraMatrix, state.distorCoeff],
     shallow
   );
   const [mapRefPoint2LeftTopMeters, mapPixel2Meters] = useStore(
@@ -32,6 +37,7 @@ export default function ImgOverlay({ props }) {
       const mapRefPointXY3D = mapRefPointXY2D.map((xy) => [...xy, 0]);
       let mapRef3DM = jsarray2cvMat(mapRefPointXY3D);
 
+      // convert from map Coordinat(bootom left to opencv topleft)
       const invRefMarker = referenceMarkers.map((el) => [
         el[1],
         refImg.height - el[0],
@@ -40,7 +46,7 @@ export default function ImgOverlay({ props }) {
 
       let cameraMat = jsarray2cvMat(cameraMatrix);
 
-      let distrMat = jsarray2cvMat(distortion);
+      let distrMat = jsarray2cvMat(distorCoeff);
 
       let rvec = new cv.Mat(3, 1, cv.CV_64FC1);
       let tvec = new cv.Mat(3, 1, cv.CV_64FC1);
@@ -72,6 +78,15 @@ export default function ImgOverlay({ props }) {
       cv.warpPerspective(cvMattmp, cvImgWarped, homgrToImg, mapPixelSize);
       let homgrToGeocord = tmpres.inv(cv.DECOMP_LU);
 
+      const homgrToRefPointtmp = Array.prototype.slice.call(
+        new Float64Array(homgrToGeocord.data64F)
+      );
+      const homgrToRefPoint = [];
+      while (homgrToRefPointtmp.length)
+        homgrToRefPoint.push(homgrToRefPointtmp.splice(0, 3));
+
+      console.log(homgrToRefPoint);
+      setHomgrToRefPoint(homgrToRefPoint);
       const warpedImg = new ImageData(
         new Uint8ClampedArray(cvImgWarped.data),
         cvImgWarped.cols,
@@ -117,7 +132,7 @@ export default function ImgOverlay({ props }) {
     mapCenter,
     mapPixelSize,
     cameraMatrix,
-    distortion,
+    distorCoeff,
   ]);
 
   return (

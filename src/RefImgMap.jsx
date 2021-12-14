@@ -9,8 +9,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import AspectRatioIcon from "@mui/icons-material/AspectRatio";
 
 import DraggableMarker from "./DraggableMarker";
-import useStore from "./store";
-import gcircle from "./gcircle.png";
+import useStore from "./store/store";
 
 const style = {
   display: "flex",
@@ -22,8 +21,8 @@ const style = {
   zIndex: 40,
 };
 
+import gcircle from "./gcircle.png";
 const circlesize = 40;
-
 const greenCircle = L.icon({
   iconUrl: gcircle,
   iconSize: [circlesize, circlesize], // size of the icon
@@ -76,8 +75,8 @@ export default function RefImgMap() {
     <Rnd
       style={style}
       default={{
-        x: 300,
-        y: 300,
+        x: 600,
+        y: 8,
         width: 320,
         height: 200,
       }}

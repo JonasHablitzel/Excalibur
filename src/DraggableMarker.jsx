@@ -1,6 +1,5 @@
 import { useMemo, useRef, useEffect } from "react";
 import { Marker, Tooltip, useMap } from "react-leaflet";
-import { Icon } from "leaflet";
 
 export default function DraggableMarker({
   index,

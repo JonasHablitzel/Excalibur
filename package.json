@@ -10,7 +10,9 @@
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.2.0",
+    "@mui/lab": "^5.0.0-alpha.59",
     "@mui/material": "^5.2.2",
+    "@mui/x-data-grid": "^5.2.0",
     "leaflet": "^1.7.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
@@ -18,6 +20,7 @@
     "react-leaflet": "^3.2.2",
     "react-leaflet-bing-v2": "^5.2.3",
     "react-rnd": "^10.3.5",
+    "react-table": "^7.7.0",
     "zustand": "^3.6.6"
   },
   "devDependencies": {

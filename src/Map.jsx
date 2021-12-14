@@ -4,16 +4,24 @@ import {
   TileLayer,
   ZoomControl,
   useMapEvents,
-  Marker,
   LayersControl,
 } from "react-leaflet";
 import { BingLayer } from "react-leaflet-bing-v2";
-const { BaseLayer, Overlay } = LayersControl;
+const { BaseLayer } = LayersControl;
 import shallow from "zustand/shallow";
 
 import DraggableMarker from "./DraggableMarker";
-import useStore from "./store";
-import { projectexy } from "./geohelpers";
+import useStore from "./store/store";
+import { projectexy } from "./utils/geohelpers";
+
+import gcircle from "./gcircle.png";
+const circlesize = 40;
+const greenCircle = L.icon({
+  iconUrl: gcircle,
+  iconSize: [circlesize, circlesize], // size of the icon
+  iconAnchor: [circlesize / 2, circlesize / 2], // point of the icon which will correspond to marker's location
+  popupAnchor: [circlesize / 2, circlesize / 2], // point from which the popup should open relative to the iconAnchor
+});
 
 const MapStateProvider = () => {
   const setMapState = useStore((state) => state.setMapState);
@@ -80,7 +88,7 @@ const MapStateProvider = () => {
 export default function Map() {
   const mapMarkers = useStore((state) => state.mapMarkers);
   const mapRefPoint = useStore((state) => state.mapRefPoint);
-  const setMapRefPoint = useStore((state) => state.setMapRefPoint);
+  const setMapRefPointxy = useStore((state) => state.setMapRefPointxy);
   const setMapPixelSize = useStore((state) => state.setMapPixelSize);
   const setRefPosition = useStore(
     (state) => state.updatePositionofMapMarkersIdx
@@ -96,7 +104,7 @@ export default function Map() {
       mapref.getBounds().getNorthWest(),
       latlng
     );
-    setMapRefPoint([latlng.lat, latlng.lng], mapRefPoint2LeftTopMeters);
+    setMapRefPointxy([latlng.lat, latlng.lng], mapRefPoint2LeftTopMeters);
   };
 
   const [mapCenter, mapZoom] = useStore(
@@ -121,10 +129,7 @@ export default function Map() {
           <BingLayer bingkey={bing_key} type="Road" />
         </BaseLayer>
         <BaseLayer checked name="Bing Maps Satelite">
-          <BingLayer maxNativeZoom={18} maxZoom={20} bingkey={bing_key} />
-        </BaseLayer>
-        <BaseLayer checked name="Bing Maps Satelite with Labels">
-          <BingLayer bingkey={bing_key} type="AerialWithLabels" />
+          <BingLayer maxNativeZoom={19} maxZoom={24} bingkey={bing_key} />
         </BaseLayer>
       </LayersControl>
       {mapMarkers.map((latlng, index) => (
@@ -136,6 +141,8 @@ export default function Map() {
           setPosition={updateMarkers}
           popupstate={true}
           tooltiptext={index + 1}
+          icon={greenCircle}
+          tootipoffset={[8, -19]}
         />
       ))}{" "}
       <MapStateProvider />

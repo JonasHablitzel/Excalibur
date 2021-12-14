@@ -104,3 +104,7 @@ button {
   margin-left: -12px;
   border-right-color: rgba(0, 0, 0, 0);
 }
+
+.myheaderClass {
+  background-color: #b8babb;
+}

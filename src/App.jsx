@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import useScript from "./useScript";
+import useScript from "./utils/useScript";
 import Controls from "./Controls";
 import Map from "./Map";
 import "./App.css";
