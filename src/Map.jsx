@@ -146,6 +146,7 @@ export default function Map() {
         />
       ))}{" "}
       <MapStateProvider />
+      <ZoomControl position="bottomleft" />
       <DraggableMarker
         key={"Mapref"}
         position={mapRefPoint}
